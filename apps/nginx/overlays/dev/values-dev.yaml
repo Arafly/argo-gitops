@@ -1,0 +1,50 @@
+# values-dev.yaml
+
+replicaCount: 2
+
+image:
+  repository: docker.io/bitnami/nginx
+  tag: "1.21.6-debian-10-r55"
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+ingress:
+  enabled: true
+  hostname: nginx.dev.example.nip.io  # This can be injected dynamically from a secret
+  ingressClassName: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  tls:
+    - hosts:
+        - nginx.dev.example.nip.io
+      secretName: nginx-dev-tls
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+  annotations: {}
+  mountPath: /bitnami/nginx
+
+metrics:
+  enabled: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
