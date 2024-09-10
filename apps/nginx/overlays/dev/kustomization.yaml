@@ -1,0 +1,5 @@
+# apps/nginx/overlays/dev/kustomization.yaml
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - patch-ingress.yaml

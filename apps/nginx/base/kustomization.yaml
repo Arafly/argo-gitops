@@ -1,0 +1,5 @@
+resources:
+  - Chart.yaml
+  - values.yaml
+  - templates/deployment.yaml
+  - templates/service.yaml
